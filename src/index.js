@@ -399,7 +399,8 @@ ServerlessClient.prototype.connect = async function () {
     if (
       e.message === "sorry, too many clients already" ||
       e.message === "Connection terminated unexpectedly" ||
-      e.message === "terminating connection due to administrator command"
+      e.message === "terminating connection due to administrator command" ||
+      e.message.indexOf("too many connections for role") !== false
     ) {
       this._client = null
       // Client in node-pg is usable only one time, once it errors we cannot re-connect again,
@@ -430,7 +431,8 @@ ServerlessClient.prototype.query = async function (...args) {
     if (
       e.message === "Client has encountered a connection error and is not queryable" ||
       e.message === "terminating connection due to administrator command" ||
-      e.message === "Connection terminated unexpectedly"
+      e.message === "Connection terminated unexpectedly" ||
+      e.message.indexOf("too many connections for role") !== false
     ) {
       // If a client has been terminated by serverless-postgres and try to query again
       // we re-initialize it and retry
