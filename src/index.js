@@ -119,9 +119,8 @@ ServerlessClient.prototype._getProcessesCount = async function () {
         WHERE datname = $1
           AND usename = $2;`
 
-    const values = [this._client.database, this._client.user]
-
     try {
+      const values = [this._client.database, this._client.user]
       const result = await this._client.query(query, values);
       this._processCount.cache = {
         count: result.rows[0].count || 0,
